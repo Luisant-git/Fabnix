@@ -1,0 +1,24 @@
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { WishlistContext } from '../contexts/WishlistContext';
+import ProductCard from './ProductCard';
+
+const WishlistPage = () => {
+    const navigate = useNavigate();
+    const { wishlist } = useContext(WishlistContext);
+
+    if (wishlist.length === 0) {
+        return <div className="wishlist-page empty-wishlist"><h2>Your Wishlist is Empty</h2><p>Add items you love to your wishlist to save them for later.</p><button onClick={() => navigate('/')}>Discover Products</button></div>;
+    }
+
+    return (
+        <div className="wishlist-page">
+            <h1>My Wishlist</h1>
+            <div className="product-grid">
+                {wishlist.map(product => <ProductCard key={product.id} product={product} navigate={navigate} />)}
+            </div>
+        </div>
+    );
+};
+
+export default WishlistPage;
