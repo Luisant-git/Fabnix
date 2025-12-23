@@ -42,7 +42,7 @@ export class WhatsappSessionService {
 
   async sendCategoryMenu(phone: string, sendMessageFn: (to: string, msg: string, imageUrl?: string) => Promise<any>) {
     const categories = await this.prisma.category.findMany({ orderBy: { id: 'asc' } });
-    let message = '🛍️ *Welcome to EN3 Fashions!*\n\nSelect a category:\n\n';
+    let message = '🛍️ *Welcome to Fabnix!*\n\nSelect a category:\n\n';
     categories.forEach(cat => {
       message += `${cat.id}. ${cat.name}\n`;
     });

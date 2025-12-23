@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="footer-content">
             <div className="footer-column brand-info">
                 <div className="logo-container" onClick={() => navigate('/')}>
-                    <span className="logo-text">EN3 Fashions</span>
+                    <span className="logo-text">Fabnix</span>
                 </div>
                 <p>Elevate your style with our curated collection of men's and boys' fashion.</p>
             </div>
@@ -46,7 +46,7 @@ const Footer = () => {
             </div>
         </div>
         <div className="footer-bottom">
-            <p>© 2025 EN3 Fashions. All rights reserved by KPG Apparels.</p>
+            <p>© 2025 Fabnix. All rights reserved by KPG Apparels.</p>
         </div>
     </footer>
     );

@@ -310,7 +310,7 @@ const OrdersList = () => {
       footerY = 30;
     }
     pdf.setFont(undefined, 'bold');
-    pdf.text('For EN3 FASHIONS:', 140, footerY - 30);
+    pdf.text('For Fabnix:', 140, footerY - 30);
     if (signatureUrl) {
       const signatureImg = new Image();
       signatureImg.src = signatureUrl;

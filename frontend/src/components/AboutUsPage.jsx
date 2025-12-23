@@ -10,11 +10,11 @@ const AboutUsPage = () => {
         <div className="container">
             <h1>About Us</h1>
             <div className="policy-content">
-                <p>EN3 Fashions, owned and operated by KPG Apparels, is a clothing brand dedicated to offering stylish, comfortable, and affordable fashion for everyday wear. While EN3 Fashions represents our brand identity and the style we deliver, KPG Apparels is our registered legal business name under which all operations, billing, and compliance are maintained.</p>
+                <p>Fabnix, owned and operated by KPG Apparels, is a clothing brand dedicated to offering stylish, comfortable, and affordable fashion for everyday wear. While Fabnix represents our brand identity and the style we deliver, KPG Apparels is our registered legal business name under which all operations, billing, and compliance are maintained.</p>
                 
                 <section>
                     <h2>Who We Are</h2>
-                    <p>At EN3 Fashions, we focus on curating modern, trendy apparel that suits the needs of today's fashion-forward customers. Our mission is to make quality fashion accessible, ensuring every product reflects comfort, durability, and style.</p>
+                    <p>At Fabnix, we focus on curating modern, trendy apparel that suits the needs of today's fashion-forward customers. Our mission is to make quality fashion accessible, ensuring every product reflects comfort, durability, and style.</p>
                 </section>
                 
                 <section>
@@ -32,7 +32,7 @@ const AboutUsPage = () => {
                 
                 <section>
                     <h2>Brand & Legal Identity</h2>
-                    <p>EN3 Fashions continues as our public-facing brand, while KPG Apparels remains the officially registered entity responsible for business operations, taxes, invoicing, and compliance. This structure allows us to maintain a strong brand presence while ensuring professional and legally compliant business management.</p>
+                    <p>Fabnix continues as our public-facing brand, while KPG Apparels remains the officially registered entity responsible for business operations, taxes, invoicing, and compliance. This structure allows us to maintain a strong brand presence while ensuring professional and legally compliant business management.</p>
                 </section>
             </div>
         </div>

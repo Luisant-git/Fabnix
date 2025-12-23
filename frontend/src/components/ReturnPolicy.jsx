@@ -7,7 +7,7 @@ const ReturnPolicy = () => {
                 <h1>Return & Refund Policy</h1>
                 <div className="policy-content">
                     <p>Last updated: 01-12-2025</p>
-                    <p>At EN3 Fashions, we want you to be completely satisfied with your purchase.</p>
+                    <p>At Fabnix, we want you to be completely satisfied with your purchase.</p>
                     
                     <section>
                         <h2>1. Return Eligibility</h2>
