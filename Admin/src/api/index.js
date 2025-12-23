@@ -6,4 +6,6 @@ export * from './brandApi';
 export * from './uploadApi';
 export * from './customerApi';
 export * from './pincodeApi';
+export * from './unitApi';
+export * from './weightApi';
 export { default as API_BASE_URL } from './config';

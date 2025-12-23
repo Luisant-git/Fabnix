@@ -259,6 +259,24 @@ const ProductDetailPage = () => {
                         {wishlistLoadingId === product.id ? <LoadingSpinner /> : (isInWishlist(product.id) ? 'Remove from Wishlist' : 'Add to Wishlist')}
                     </button>
                 </div>
+
+                {/* Unit and Weight Information */}
+                {(product.unit || product.weight) && (
+                    <div className="pdp-product-info">
+                        {product.unit && (
+                            <div className="pdp-info-item">
+                                <span className="pdp-info-label">Unit:</span>
+                                <span className="pdp-info-value">{product.unit.name}</span>
+                            </div>
+                        )}
+                        {product.weight && (
+                            <div className="pdp-info-item">
+                                <span className="pdp-info-label">Weight:</span>
+                                <span className="pdp-info-value">{product.weight.name}</span>
+                            </div>
+                        )}
+                    </div>
+                )}
                 
                 {product.bundleOffers && product.bundleOffers.length > 0 && (
                     <div className="bundle-promo-card">

@@ -28,6 +28,8 @@ import TrackerStocks from './pages/TrackerStocks'
 import EmployeeDetails from './pages/EmployeeDetails'
 import AddEmployee from './pages/AddEmployee'
 import AddTemplate from './pages/AddTemplate'
+import UnitMaster from './pages/UnitMaster'
+import WeightMaster from './pages/WeightMaster'
 import Login from './pages/Login'
 import BrandList from './pages/BrandList'
 import CategoryList from './pages/CategoryList'
@@ -138,6 +140,8 @@ function App() {
               <Route path="/employee-details" element={<EmployeeDetails />} />
               <Route path="/add-employee" element={<AddEmployee />} />
               <Route path="/add-template" element={<AddTemplate />} />
+              <Route path="/unit-master" element={<UnitMaster />} />
+              <Route path="/weight-master" element={<WeightMaster />} />
               <Route path="/brand-list" element={<BrandList />} />
               <Route path="/category-list" element={<CategoryList />} />
               <Route path="/subcategory-list" element={<SubCategoryList />} />

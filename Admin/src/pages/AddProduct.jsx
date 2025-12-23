@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Upload, X, Plus, Edit } from 'lucide-react'
 import { toast } from 'react-toastify'
 import { ColorPicker } from 'antd'
-import { createProduct, getCategories, getSubCategories, getBrands, uploadImage } from '../api'
+import { createProduct, getCategories, getSubCategories, getBrands, uploadImage, getUnits, getWeights } from '../api'
 
 const AddProduct = () => {
   const navigate = useNavigate();
@@ -13,6 +13,8 @@ const AddProduct = () => {
     categoryId: '',
     subCategoryId: '',
     brandId: '',
+    unitId: '',
+    weightId: '',
     mrp: '',
     basePrice: '',
     hsnCode: '',
@@ -29,6 +31,8 @@ const AddProduct = () => {
   const [categories, setCategories] = useState([])
   const [subCategories, setSubCategories] = useState([])
   const [brands, setBrands] = useState([])
+  const [units, setUnits] = useState([])
+  const [weights, setWeights] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [editingColorIndex, setEditingColorIndex] = useState(null)
@@ -187,14 +191,18 @@ const AddProduct = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [categoriesData, subCategoriesData, brandsData] = await Promise.all([
+        const [categoriesData, subCategoriesData, brandsData, unitsData, weightsData] = await Promise.all([
           getCategories(),
           getSubCategories(),
-          getBrands()
+          getBrands(),
+          getUnits(),
+          getWeights()
         ]);
         setCategories(categoriesData);
         setSubCategories(subCategoriesData);
         setBrands(brandsData);
+        setUnits(unitsData);
+        setWeights(weightsData);
       } catch (err) {
         setError('Failed to load form data');
       }
@@ -214,6 +222,8 @@ const AddProduct = () => {
         categoryId: parseInt(formData.categoryId),
         subCategoryId: formData.subCategoryId ? parseInt(formData.subCategoryId) : null,
         brandId: formData.brandId ? parseInt(formData.brandId) : null,
+        unitId: formData.unitId ? parseInt(formData.unitId) : null,
+        weightId: formData.weightId ? parseInt(formData.weightId) : null,
         mrp: formData.mrp,
         basePrice: formData.basePrice,
         hsnCode: formData.hsnCode || null,
@@ -235,6 +245,8 @@ const AddProduct = () => {
         categoryId: '',
         subCategoryId: '',
         brandId: '',
+        unitId: '',
+        weightId: '',
         mrp: '',
         basePrice: '',
         hsnCode: '',
@@ -352,6 +364,40 @@ const AddProduct = () => {
                   </option>
                 ))}
               </select>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">Unit</label>
+                <select
+                  className="form-select"
+                  value={formData.unitId}
+                  onChange={(e) => handleInputChange('unitId', e.target.value)}
+                >
+                  <option value="">Select Unit</option>
+                  {units.map(unit => (
+                    <option key={unit.id} value={unit.id}>
+                      {unit.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Weight</label>
+                <select
+                  className="form-select"
+                  value={formData.weightId}
+                  onChange={(e) => handleInputChange('weightId', e.target.value)}
+                >
+                  <option value="">Select Weight</option>
+                  {weights.map(weight => (
+                    <option key={weight.id} value={weight.id}>
+                      {weight.value} {weight.unit}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div className="form-group">

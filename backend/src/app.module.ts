@@ -21,9 +21,11 @@ import { OverviewModule } from './overview/overview.module';
 import { PincodeModule } from './pincode.module';
 import { ShippingModule } from './shipping.module';
 import { SettingsModule } from './settings/settings.module';
+import { UnitModule } from './unit/unit.module';
+import { WeightModule } from './weight/weight.module';
 
 @Module({
-  imports: [UserModule, AuthModule, ProductModule, UploadModule, BrandModule, CategoryModule, SubCategoryModule, BannerModule, CartModule, OrderModule, WishlistModule, CouponModule, CustomerModule, WhatsappModule, WhatsappSessionModule, DashboardModule, OverviewModule, PincodeModule, ShippingModule, SettingsModule],
+  imports: [UserModule, AuthModule, ProductModule, UploadModule, BrandModule, CategoryModule, SubCategoryModule, BannerModule, CartModule, OrderModule, WishlistModule, CouponModule, CustomerModule, WhatsappModule, WhatsappSessionModule, DashboardModule, OverviewModule, PincodeModule, ShippingModule, SettingsModule, UnitModule, WeightModule],
   controllers: [AppController],
   providers: [AppService],
 })

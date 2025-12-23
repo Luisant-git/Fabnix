@@ -23,6 +23,8 @@ export class ProductService {
         category: true,
         subCategory: true,
         brand: true,
+        unit: true,
+        weight: true,
       },
       orderBy: {
         createdAt: 'desc',
@@ -39,6 +41,8 @@ export class ProductService {
         category: true,
         subCategory: true,
         brand: true,
+        unit: true,
+        weight: true,
       },
     });
   }
@@ -50,19 +54,66 @@ export class ProductService {
         category: true,
         subCategory: true,
         brand: true,
+        unit: true,
+        weight: true,
       },
     });
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
-    const { id: _, createdAt, updatedAt, category, subCategory, brand, ...data } = updateProductDto as any;
+    const { id: _, createdAt, updatedAt, ...rest } = updateProductDto as any;
+
+    // Extract relation id fields to convert into nested writes
+    const { categoryId, subCategoryId, brandId, unitId, weightId, ...other } =
+      rest;
+
+    const data: any = {
+      ...other,
+      gallery: other.gallery as any,
+      colors: other.colors as any,
+    };
+
+    // Convert scalar foreign keys into nested relation updates as required by Prisma
+    if (categoryId !== undefined) {
+      // category is required in the schema - connect to the provided id
+      data.category = { connect: { id: Number(categoryId) } };
+    }
+
+    if (subCategoryId !== undefined) {
+      if (subCategoryId === null) {
+        data.subCategory = { disconnect: true };
+      } else {
+        data.subCategory = { connect: { id: Number(subCategoryId) } };
+      }
+    }
+
+    if (brandId !== undefined) {
+      if (brandId === null) {
+        data.brand = { disconnect: true };
+      } else {
+        data.brand = { connect: { id: Number(brandId) } };
+      }
+    }
+
+    if (unitId !== undefined) {
+      if (unitId === null) {
+        data.unit = { disconnect: true };
+      } else {
+        data.unit = { connect: { id: Number(unitId) } };
+      }
+    }
+
+    if (weightId !== undefined) {
+      if (weightId === null) {
+        data.weight = { disconnect: true };
+      } else {
+        data.weight = { connect: { id: Number(weightId) } };
+      }
+    }
+
     return this.prisma.product.update({
       where: { id },
-      data: {
-        ...data,
-        gallery: data.gallery as any,
-        colors: data.colors as any,
-      },
+      data,
     });
   }
 
@@ -90,16 +141,16 @@ export class ProductService {
 
     const colorCount = selectedColors.length;
     const bundleOffer = (product.bundleOffers as any[])?.find(
-      offer => offer.colorCount === colorCount
+      (offer) => offer.colorCount === colorCount,
     );
-    
+
     const price = bundleOffer ? bundleOffer.price : product.basePrice;
 
     return {
       colorCount,
       price,
       selectedColors,
-      availableColors: product.colors
+      availableColors: product.colors,
     };
   }
 
@@ -120,7 +171,7 @@ export class ProductService {
       take: 10,
     });
 
-    return products.map(product => {
+    return products.map((product) => {
       const firstColor = product.colors[0] as any;
       const firstSize = firstColor?.sizes?.[0];
       const firstGallery = product.gallery[0] as any;

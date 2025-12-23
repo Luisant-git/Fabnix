@@ -287,6 +287,12 @@ const ProductList = () => {
           <strong>Brand:</strong> {product.brand?.name || "N/A"}
         </p>
         <p>
+          <strong>Unit:</strong> {product.unit?.name || "N/A"}
+        </p>
+        <p>
+          <strong>Weight:</strong> {product.weight ? `${product.weight.value} ${product.weight.unit}` : "N/A"}
+        </p>
+        <p>
           <strong>Base Price:</strong> ₹{product.basePrice}
         </p>
         {product.hsnCode && (

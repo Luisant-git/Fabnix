@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { Upload, X, Plus, Edit } from 'lucide-react'
 import { toast } from 'react-toastify'
 import { ColorPicker } from 'antd'
-import { getProduct, updateProduct, getCategories, getSubCategories, getBrands, uploadImage } from '../api'
+import { getProduct, updateProduct, getCategories, getSubCategories, getBrands, uploadImage, getUnits, getWeights } from '../api'
 
 const EditProduct = () => {
   const { id } = useParams()
@@ -15,6 +15,8 @@ const EditProduct = () => {
     categoryId: '',
     subCategoryId: '',
     brandId: '',
+    unitId: '',
+    weightId: '',
     mrp: '',
     basePrice: '',
     hsnCode: '',
@@ -31,6 +33,8 @@ const EditProduct = () => {
   const [categories, setCategories] = useState([])
   const [subCategories, setSubCategories] = useState([])
   const [brands, setBrands] = useState([])
+  const [units, setUnits] = useState([])
+  const [weights, setWeights] = useState([])
   const [loading, setLoading] = useState(false)
   const [editingColorIndex, setEditingColorIndex] = useState(null)
   const [currentColor, setCurrentColor] = useState({ name: '', code: '#000000', images: [], sizes: [] })
@@ -39,11 +43,13 @@ const EditProduct = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [productData, categoriesData, subCategoriesData, brandsData] = await Promise.all([
+        const [productData, categoriesData, subCategoriesData, brandsData, unitsData, weightsData] = await Promise.all([
           getProduct(id),
           getCategories(),
           getSubCategories(),
-          getBrands()
+          getBrands(),
+          getUnits(),
+          getWeights()
         ])
         
         setFormData({
@@ -58,6 +64,8 @@ const EditProduct = () => {
         setCategories(categoriesData)
         setSubCategories(subCategoriesData)
         setBrands(brandsData)
+        setUnits(unitsData)
+        setWeights(weightsData)
       } catch (err) {
         toast.error('Failed to load product data')
         navigate('/product-list')
@@ -208,7 +216,9 @@ const EditProduct = () => {
         ...formData,
         categoryId: parseInt(formData.categoryId),
         subCategoryId: formData.subCategoryId ? parseInt(formData.subCategoryId) : null,
-        brandId: formData.brandId ? parseInt(formData.brandId) : null
+        brandId: formData.brandId ? parseInt(formData.brandId) : null,
+        unitId: formData.unitId ? parseInt(formData.unitId) : null,
+        weightId: formData.weightId ? parseInt(formData.weightId) : null
       }
       
       await updateProduct(id, productData)
@@ -323,6 +333,40 @@ const EditProduct = () => {
                   </option>
                 ))}
               </select>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">Unit</label>
+                <select
+                  className="form-select"
+                  value={formData.unitId}
+                  onChange={(e) => handleInputChange('unitId', e.target.value)}
+                >
+                  <option value="">Select Unit</option>
+                  {units.map(unit => (
+                    <option key={unit.id} value={unit.id}>
+                      {unit.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Weight</label>
+                <select
+                  className="form-select"
+                  value={formData.weightId}
+                  onChange={(e) => handleInputChange('weightId', e.target.value)}
+                >
+                  <option value="">Select Weight</option>
+                  {weights.map(weight => (
+                    <option key={weight.id} value={weight.id}>
+                      {weight.value} {weight.unit}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
 
             <div className="form-group">

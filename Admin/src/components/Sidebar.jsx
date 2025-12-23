@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, Package, ShoppingCart, Users, Warehouse, Settings, ChevronDown, ChevronRight, BarChart3, Eye, Plus, List, Gift, Tag, Image, Percent, MapPin, Star, TrendingUp, UserPlus, Menu, X,FolderKanban,TicketPercent, Layers, MessageCircle} from 'lucide-react'
+import { LayoutDashboard, Package, ShoppingCart, Users, Warehouse, Settings, ChevronDown, ChevronRight, BarChart3, Eye, Plus, List, Gift, Tag, Image, Percent, MapPin, Star, TrendingUp, UserPlus, Menu, X,FolderKanban,TicketPercent, Layers, MessageCircle, Scale, Weight} from 'lucide-react'
 
 const Sidebar = ({ collapsed, setCollapsed }) => {
   const [expandedItems, setExpandedItems] = useState({})
@@ -35,6 +35,8 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
        { key: 'brand-list', icon: Tag, label: 'Brands', path: '/brand-list' },
   { key: 'category-list', icon: FolderKanban, label: 'Categories', path: '/category-list' },
   { key: 'subcategory-list', icon: Layers, label: 'Sub Categories', path: '/subcategory-list' },
+  { key: 'unit-master', icon: Scale, label: 'Units', path: '/unit-master' },
+  { key: 'weight-master', icon: Weight, label: 'Weights', path: '/weight-master' },
   { key: 'banner-list', icon: Image, label: 'Banners', path: '/banner-list' },
   { key: 'coupon-list', icon: TicketPercent, label: 'Coupons', path: '/coupon-list' },
   { key: 'shipping-settings', icon: Warehouse, label: 'Shipping Settings', path: '/shipping-settings' },

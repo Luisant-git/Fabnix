@@ -94,6 +94,8 @@ model Product {
   basePrice     String
   mrp           String?
   hsnCode       String?
+  unitId        Int?     // Optional unit reference
+  weightId      Int?     // Optional weight reference
   bundleOffers  Json[] // [{colorCount: 1, price: "499"}, {colorCount: 2, price: "800"}, {colorCount: 3, price: "1000"}]
   tags          String[]
   gallery       Json[]
@@ -107,12 +109,16 @@ model Product {
   category      Category     @relation(fields: [categoryId], references: [id])
   subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id])
   brand         Brand?       @relation(fields: [brandId], references: [id])
+  unit          Unit?        @relation(fields: [unitId], references: [id])
+  weight        Weight?      @relation(fields: [weightId], references: [id])
   cartItems     CartItem[]
   orderItems    OrderItem[]
 
   @@index([categoryId])
   @@index([subCategoryId])
   @@index([brandId])
+  @@index([unitId])
+  @@index([weightId])
 }
 
 model Brand {
@@ -343,4 +349,24 @@ model ShippingRule {
   flatShippingRate Float
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+}
+
+model Unit {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products    Product[]
+}
+
+model Weight {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  value     Float
+  unit      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products  Product[]
 }
