@@ -1,17 +1,15 @@
 import { Controller, Post, Get, Body, Param, UseGuards, Request, Patch } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { PaymentService } from './payment.service';
 
 @ApiTags('Orders')
 @Controller('orders')
 export class OrderController {
   constructor(
-    private readonly orderService: OrderService,
-    private readonly paymentService: PaymentService
+    private readonly orderService: OrderService
   ) {}
 
   @Post()
@@ -66,23 +64,5 @@ export class OrderController {
       updateOrderStatusDto.trackingId,
       updateOrderStatusDto.trackingLink
     );
-  }
-
-  @Post('payment/create')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Create Razorpay order' })
-  async createPaymentOrder(@Body() body: { amount: number }) {
-    return this.paymentService.createOrder(body.amount);
-  }
-
-  @Post('payment/verify')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Verify Razorpay payment' })
-  async verifyPayment(@Body() body: { orderId: string; paymentId: string; signature: string }) {
-    const isValid = this.paymentService.verifyPayment(body.orderId, body.paymentId, body.signature);
-    const paymentMethod = isValid ? await this.paymentService.getPaymentMethod(body.paymentId) : 'online';
-    return { success: isValid, paymentMethod };
   }
 }

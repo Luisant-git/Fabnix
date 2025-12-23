@@ -50,17 +50,18 @@ export class AuthService {
   }
  
   async requestOtp(phone: string) {
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otp = '123456'; // Dummy OTP for testing
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes
  
     await this.prisma.otp.deleteMany({ where: { phone, verified: false } });
     await this.prisma.otp.create({ data: { phone, otp, expiresAt } });
  
-    const sent = await this.whatsappService.sendOtp(phone, otp);
-    if (!sent) throw new BadRequestException('Failed to send OTP');
+    // Skip WhatsApp sending for testing
+    // const sent = await this.whatsappService.sendOtp(phone, otp);
+    // if (!sent) throw new BadRequestException('Failed to send OTP');
  
     const existingUser = await this.prisma.user.findUnique({ where: { phone } });
-    return { message: 'OTP sent successfully', isNewUser: !existingUser };
+    return { message: 'OTP sent successfully (Use 123456 for testing)', isNewUser: !existingUser };
   }
  
   async verifyOtpAndLogin(phone: string, otp: string, name?: string, email?: string) {

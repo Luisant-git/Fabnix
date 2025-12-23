@@ -1,12 +1,10 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-
 import { toast } from 'react-toastify';
 import { CartContext } from '../contexts/CartContext';
 import { AuthContext } from '../contexts/AuthContext';
 import { createOrder } from '../api/orderApi';
 import { validateCoupon, getActiveCoupons } from '../api/couponApi';
-import { createPaymentOrder, verifyPayment } from '../api/paymentApi';
 import { getShippingRules } from '../api/shippingApi';
 import LoadingSpinner from './LoadingSpinner';
 const CheckoutPage = () => {
@@ -140,112 +138,37 @@ const CheckoutPage = () => {
 
         setIsPlacingOrder(true);
         try {
-            const razorpayOrder = await createPaymentOrder(finalTotal, token);
-            
-            const options = {
-                key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-                amount: razorpayOrder.amount,
-                currency: razorpayOrder.currency,
-                name: 'EN3 Trends',
-                description: 'Order Payment',
-                order_id: razorpayOrder.id,
-                handler: async (response) => {
-                    setIsPlacingOrder(true);
-                    try {
-                        const verification = await verifyPayment({
-                            orderId: response.razorpay_order_id,
-                            paymentId: response.razorpay_payment_id,
-                            signature: response.razorpay_signature
-                        }, token);
-
-                        if (verification.success) {
-                            const orderData = {
-                                subtotal: subtotal.toString(),
-                                deliveryFee: deliveryFee.toString(),
-                                total: finalTotal.toString(),
-                                discount: discount.toString(),
-                                couponCode: appliedCoupon?.code || undefined,
-                                paymentMethod: verification.paymentMethod || 'online',
-                                shippingAddress: { ...formData, state: selectedState.value },
-                                deliveryOption: { 
-                                    fee: deliveryFee, 
-                                    name: 'Standard Delivery',
-                                    gst: {
-                                        rate: GST_RATE,
-                                        amount: gstAmount,
-                                        cgst: cgst,
-                                        sgst: sgst,
-                                        igst: igst,
-                                        isSameState: isSameState
-                                    }
-                                }
-                            };
-                            
-                            const order = await createOrder(orderData);
-                            await fetchCart();
-                            toast.success('Payment successful! Order placed.');
-                            setTimeout(() => {
-                                navigate('/order-confirmation', { state: { order }, replace: true });
-                            }, 500);
-                        } else {
-                            toast.error('Payment verification failed');
-                        }
-                    } catch (error) {
-                        console.error('Order creation error:', error);
-                        toast.error('Payment received but order failed. Contact support.');
-                    } finally {
-                        setIsPlacingOrder(false);
+            const orderData = {
+                subtotal: subtotal.toString(),
+                deliveryFee: deliveryFee.toString(),
+                total: finalTotal.toString(),
+                discount: discount.toString(),
+                couponCode: appliedCoupon?.code || undefined,
+                paymentMethod: 'Cash on Delivery', // Cash on Delivery
+                shippingAddress: { ...formData, state: selectedState.value },
+                deliveryOption: { 
+                    fee: deliveryFee, 
+                    name: 'Standard Delivery',
+                    gst: {
+                        rate: GST_RATE,
+                        amount: gstAmount,
+                        cgst: cgst,
+                        sgst: sgst,
+                        igst: igst,
+                        isSameState: isSameState
                     }
-                },
-                modal: {
-                    ondismiss: async () => {
-                        setIsPlacingOrder(false);
-                        try {
-                            const abandonedData = {
-                                subtotal: subtotal.toString(),
-                                deliveryFee: deliveryFee.toString(),
-                                total: finalTotal.toString(),
-                                discount: discount.toString(),
-                                couponCode: appliedCoupon?.code || undefined,
-                                paymentMethod: 'abandoned',
-                                shippingAddress: { ...formData, state: selectedState.value },
-                                deliveryOption: { 
-                                    fee: deliveryFee, 
-                                    name: 'Standard Delivery',
-                                    gst: {
-                                        rate: GST_RATE,
-                                        amount: gstAmount,
-                                        cgst: cgst,
-                                        sgst: sgst,
-                                        igst: igst,
-                                        isSameState: isSameState
-                                    }
-                                }
-                            };
-                            await createOrder(abandonedData);
-                        } catch (error) {
-                            console.error('Failed to save abandoned checkout:', error);
-                        }
-                    }
-                },
-                prefill: {
-                    name: formData.fullName,
-                    contact: formData.mobile
-                },
-                theme: { color: '#3399cc' }
+                }
             };
-
-            const rzp = new window.Razorpay(options);
-            rzp.on('payment.failed', (response) => {
-                setIsPlacingOrder(false);
-                toast.error('Payment failed: ' + (response.error?.description || 'Please try again'));
-            });
             
-            rzp.open();
-            setIsPlacingOrder(false);
+            const order = await createOrder(orderData);
+            await fetchCart();
+            toast.success('Order placed successfully!');
+            setTimeout(() => {
+                navigate('/order-confirmation', { state: { order }, replace: true });
+            }, 500);
         } catch (error) {
-            console.error('Error:', error);
-            toast.error('Failed to initiate payment');
+            console.error('Order creation error:', error);
+            toast.error('Failed to place order. Please try again.');
         } finally {
             setIsPlacingOrder(false);
         }
@@ -363,7 +286,7 @@ const CheckoutPage = () => {
                             )}
                         </section>
                         <button type="submit" className="confirm-pay-btn" disabled={isPlacingOrder}>
-                            {isPlacingOrder ? <LoadingSpinner /> : 'Make Payment'}
+                            {isPlacingOrder ? <LoadingSpinner /> : 'Place Order'}
                         </button>
                     </form>
                 </div>

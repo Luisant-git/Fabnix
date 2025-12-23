@@ -41,8 +41,8 @@ export class OrderService {
       }
     }
 
-    // Determine order status
-    const orderStatus = createOrderDto.paymentMethod === 'abandoned' ? 'Abandoned' : 'Placed';
+    // Determine order status - all orders are placed directly
+    const orderStatus = 'Placed';
 
     // Create order with items
     const order = await this.prisma.order.create({
@@ -75,14 +75,11 @@ export class OrderService {
       include: { items: true }
     });
 
-    // Clear cart only if order is placed successfully (not abandoned)
-    if (orderStatus !== 'Abandoned') {
-      await this.prisma.cartItem.deleteMany({
-        where: { cartId: cart.id }
-      });
-      // Send WhatsApp confirmation only for successful orders
-      await this.whatsappService.sendOrderConfirmation(order);
-    }
+    // Clear cart and send confirmation
+    await this.prisma.cartItem.deleteMany({
+      where: { cartId: cart.id }
+    });
+    await this.whatsappService.sendOrderConfirmation(order);
 
     return order;
   }
