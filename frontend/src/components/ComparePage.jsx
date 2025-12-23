@@ -267,7 +267,7 @@ const ComparePage = () => {
                       <div style={{ fontSize: 14 }}>Empty</div>
                     </div>
                   </div>
-                  <button className="btn" onClick={() => navigate("/search")}>
+                  <button className="btn" onClick={() => navigate("/")}>
                     Add from Catalog
                   </button>
                 </div>
@@ -277,7 +277,7 @@ const ComparePage = () => {
         </div>
 
         <style>{`
-                    .btn { padding: 8px 12px; background: #1976d2; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+                    .btn { padding: 8px 12px; background: #8b1d3a; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
                     .btn.danger { background: #f44336; }
                     .remove-btn { position:absolute; top:8px; right:8px; background:#fff; border:1px solid rgba(244,67,54,0.12); color:#f44336; border-radius:50%; width:36px; height:36px; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow: 0 2px 6px rgba(0,0,0,0.06); z-index:50; }
                     .remove-btn svg { display:block; }
